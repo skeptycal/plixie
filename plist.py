@@ -10,8 +10,7 @@ import plistlib  # Python 2.6 +
 
 # main routine
 def main():
-    """ main - called if __name__ == '__main__' to test functionality from CLI
-    """
+    """ main """
     # code
     return
 
