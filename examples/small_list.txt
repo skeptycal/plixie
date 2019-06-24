@@ -1,0 +1,9 @@
+/Volumes/Data/skeptycal/llvm-project/lldb/tools/lldb-vscode/lldb-vscode-Info.plist
+/Volumes/Data/skeptycal/.vscode/extensions/glavin001.unibeautify-vscode-0.7.0/.vscode-test/stable/Visual Studio Code.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/Info.plist
+/Volumes/Data/skeptycal/.vscode/extensions/glavin001.unibeautify-vscode-0.7.0/.vscode-test/stable/Visual Studio Code.app/Contents/Frameworks/Squirrel.framework/Versions/A/Resources/Info.plist
+/Volumes/Data/skeptycal/.vscode/extensions/glavin001.unibeautify-vscode-0.7.0/.vscode-test/stable/Visual Studio Code.app/Contents/Frameworks/ReactiveCocoa.framework/Versions/A/Resources/Info.plist
+/Volumes/Data/skeptycal/.vscode/extensions/glavin001.unibeautify-vscode-0.7.0/.vscode-test/stable/Visual Studio Code.app/Contents/Frameworks/Mantle.framework/Versions/A/Resources/Info.plist
+/Volumes/Data/skeptycal/.vscode/extensions/glavin001.unibeautify-vscode-0.7.0/.vscode-test/stable/Visual Studio Code.app/Contents/Frameworks/Code Helper NP.app/Contents/Info.plist
+/Volumes/Data/skeptycal/.vscode/extensions/glavin001.unibeautify-vscode-0.7.0/.vscode-test/stable/Visual Studio Code.app/Contents/Frameworks/Code Helper.app/Contents/Info.plist
+/Volumes/Data/skeptycal/.vscode/extensions/glavin001.unibeautify-vscode-0.7.0/.vscode-test/stable/Visual Studio Code.app/Contents/Frameworks/Code Helper EH.app/Contents/Info.plist
+/Volumes/Data/skeptycal/.vscode/extensions/glavin001.unibeautify-vscode-0.7.0/.vscode-test/stable/Visual Studio Code.app/Contents/Info.plist
