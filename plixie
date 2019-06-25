@@ -1,0 +1,136 @@
+#!/usr/bin/env bash
+###############################################################################
+# Michael Treanor  <skeptycal@gmail.com>
+# copyright 2019 (c) Michael Treanor
+# license MIT <https://opensource.org/licenses/MIT>
+# https://www.github.com/skeptycal
+###############################################################################
+# Initialization
+
+# Activate Sudo Environment (often required)
+# change this if you don't require it
+sudo_env='true'
+
+MAIN=$(echo -en '\001\033[38;5;229m')
+WARN=$(echo -en '\001\033[38;5;203m')
+BLUE=$(echo -en '\001\033[38;5;38m')
+WHITE=$(echo -en '\001\033[37m')
+PURPLE=$(echo -en '\001\033[38;5;93m')
+
+name=$(basename $0)
+
+###############################################################################
+# Functions
+
+function usage() {
+cat <<-usage_text
+
+${MAIN}NAME${WHITE}
+    $name - convert plist files
+
+${MAIN}SYNOPSIS${WHITE}
+    $name SOURCE [FORMAT] [MINE]
+
+${MAIN}DESCRIPTION${WHITE}
+    Convert macOS plist file SOURCE to the optional FORMAT requested. The
+    default format is xml1. If the file is already in the requested format,
+    nothing is done. If the format requested is available, the file is
+    translated and a copy is written with a new extension that reflects the
+    new format.
+
+    ${MAIN}SOURCE${WHITE} - existing plist file
+    ${MAIN}FORMAT${WHITE} - optional {xml1 | binary1 | json}
+        format in macOS naming format (default is xml1)
+    ${MAIN}MINE${WHITE} - set to 'mine' to retain (non-sudo) ownership of the
+        new file (default is current owner) (rarely needed)
+
+    note: As tested, it is not possible to use a json file as *input*.
+
+usage_text
+}
+
+function getout() {
+    # escape hatch ... display error and exit (delete partial file if needed)
+    [[ -f "$new_file" ]] && rm -f "$new_file"
+    printf "${WARN}${2} ${1}\n\n${WHITE}"
+    usage
+    exit 1
+}
+
+function in_list() {
+    # return true if $1 is in $2 (space delimited list)
+    [[ -n $(echo $2 | xargs -n1 echo | grep -e "^${1}$") ]]
+}
+
+function make_sudo() {
+    if [[ "$sudo_env" == 'true' ]]; then
+        current_user="$(whoami)" # get current user (for 'mine' option)
+        sudo -v # Get the administrator password upfront
+        # Keep-alive: update existing `sudo` time stamp until script
+        # has finished. (likely overkill, but it's easy)
+        while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+    fi
+}
+
+###############################################################################
+# Script Content
+###############################################################################
+
+########################
+# test parameters
+[[ -z "$1" ]] && getout "$1" "Required parameter missing. "
+[[ -f "$1" ]] || getout "$1" "File not found: "
+[[ -r "$1" ]] && file="$1" || getout "$1" "File not readable: "
+[[ -z "$2" ]] && option='xml1' || option="$2"
+[[ in_list "$option" 'xml1 binary1 json' ]] || getout "$option" "Requested option not available: "
+[[ "$3" == 'mine' ]] && mine='mine' || mine=''
+
+########################
+# check file format
+[[ "$sudo_env" ]] && sudo plutil -lint "$file" || plutil -lint "$file"
+[[ "$?" ]] && printf "File linting successful. Original format is valid: ${file}\n" || getout "$file" "File format incompatible: "
+
+########################
+# All tests checkout ... perform conversion
+new_file="${file}.${option}"
+# backup original
+[[ "$sudo_env" ]] && sudo cp -af "$file" "${file}.bak" || cp -af "$file" "${file}.bak"
+# create working copy
+[[ "$sudo_env" ]] && sudo cp -af "$file" "$new_file" || cp -af "$file" "$new_file"
+# if $mine option ... make it mine
+[[ $mine ]] && sudo chown "$current_user" "$new_file"
+# convert
+[[ "$sudo_env" ]] && sudo plutil -convert "$option" "$new_file" || plutil -convert "$option" "$new_file"
+[[ "$?" ]] && printf "Conversion successful\n" || getout "$file" "Error converting to ${option} format : "
+[[ "$?" ]] && printf "New file created.\n" || getout "$file" "Error renaming file. New file uses original name: "
+printf '\n'
+printf "${MAIN}${file} was converted to ${option} format. New filename: ${new_file}\n\n"
+
+exit 0
+
+########################
+# References:
+# find command: https://math2001.github.io/post/bashs-find-command/
+# test for var in list: https://stackoverflow.com/questions/8063228/how-do-i-check-if-a-variable-exists-in-a-list-in-bash
+# heredocs: http://tldp.org/LDP/abs/html/here-docs.html
+
+# Resources
+<<colors
+    RESTORE=$(echo -en '\001\033[0m\002')
+    RED=$(echo -en '\001\033[00;31m\002')
+    GREEN=$(echo -en '\001\033[00;32m\002')
+    YELLOW=$(echo -en '\001\033[00;33m\002')
+    BLUE=$(echo -en '\001\033[00;34m\002')
+    MAGENTA=$(echo -en '\001\033[00;35m\002')
+    PURPLE=$(echo -en '\001\033[00;35m\002')
+    CYAN=$(echo -en '\001\033[00;36m\002')
+    LIGHTGRAY=$(echo -en '\001\033[00;37m\002')
+    LRED=$(echo -en '\001\033[01;31m\002')
+    LGREEN=$(echo -en '\001\033[01;32m\002')
+    LYELLOW=$(echo -en '\001\033[01;33m\002')
+    LBLUE=$(echo -en '\001\033[01;34m\002')
+    LMAGENTA=$(echo -en '\001\033[01;35m\002')
+    LPURPLE=$(echo -en '\001\033[01;35m\002')
+    LCYAN=$(echo -en '\001\033[01;36m\002')
+    WHITE=$(echo -en '\001\033[01;37m\002')
+colors
