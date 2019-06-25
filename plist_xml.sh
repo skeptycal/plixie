@@ -24,11 +24,11 @@ BLUE='\u001b[38;5;38m'
 WHITE='\u001b[37m'
 PURPLE='\u001b[38;5;93m'
 
-usage="""${MAIN}NAME${WHITE}
-    plist_xml - convert plist files
+usage="""${MAIN}${0}${WHITE}
+    $0 - convert plist files
 
 ${MAIN}SYNOPSIS${WHITE}
-    plist_xml SOURCE [FORMAT] [MINE]
+    $0 SOURCE [FORMAT] [MINE]
 
 ${MAIN}DESCRIPTION${WHITE}
     Convert macOS plist file SOURCE to the optional FORMAT requested. The
@@ -38,10 +38,10 @@ ${MAIN}DESCRIPTION${WHITE}
     new format.
 
     ${MAIN}SOURCE${WHITE} - existing plist file
-    ${MAIN}FORMAT${WHITE} - optional format in (xml1 | binary1 | json)
-        (default is xml1)
-    ${MAIN}MINE${WHITE} - set to 'mine' to retain (non-sudo) ownership
-        of the new file (default is current owner)
+    ${MAIN}FORMAT${WHITE} - optional {xml1 | binary1 | json}
+        format in macOS naming format (default is xml1)
+    ${MAIN}MINE${WHITE} - set to 'mine' to retain (non-sudo) ownership of the
+        new file (default is current owner) (rarely needed)
 
 """
 
@@ -70,6 +70,8 @@ function getout() {
 
 ########################
 # test parameters
+
+echo "name $0"
 [[ -z "$1" ]] && getout "$1" "Required parameter missing. "
 [[ -f "$1" ]] || getout "$1" "File not found: "
 [[ -r "$1" ]] && file="$1" || getout "$1" "File not readable: "
