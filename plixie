@@ -6,18 +6,33 @@
 # https://www.github.com/skeptycal
 ###############################################################################
 # Initialization
-
-# Activate Sudo Environment (often required)
-# change this if you don't require it
-sudo_env='true'
+debug=0 # set to 1 for debug output
+script_source="$(dirname "${BASH_SOURCE}")"
+bin_path="$HOME/bin/utilities/pc_bak"
+here=$PWD
 
 MAIN=$(echo -en '\001\033[38;5;229m')
 WARN=$(echo -en '\001\033[38;5;203m')
 BLUE=$(echo -en '\001\033[38;5;38m')
 WHITE=$(echo -en '\001\033[37m')
 PURPLE=$(echo -en '\001\033[38;5;93m')
+RESET=$(echo -en '\001\033[0m\002')
 
 name=$(basename $0)
+
+if (( $debug == 1 )); then
+    # set -v
+    echo "debug: $debug"
+    echo "script_source: $script_source"
+    echo "bin_path: $bin_path"
+    echo "here: $here"
+    echo "PWD: $PWD"
+    echo "0: $0"
+    echo "basename: $name"
+fi
+# Activate Sudo Environment (often required)
+# change this if you don't require it
+sudo_env='true'
 
 ###############################################################################
 # Functions
@@ -57,14 +72,19 @@ function getout() {
     exit 1
 }
 
-function in_list() {
-    # return true if $1 is in $2 (space delimited list)
-    [[ -n $(echo $2 | xargs -n1 echo | grep -e "^${1}$") ]]
+function msg() {
+    if (( debug == 1 )); then
+        printf "    ==> ${MAIN}"
+        printf "${1}"
+        printf "${RESET}\n\n"
+        # echo -e "$($1)"
+    fi
 }
 
 function make_sudo() {
     if [[ "$sudo_env" == 'true' ]]; then
         current_user="$(whoami)" # get current user (for 'mine' option)
+        msg 'current_user="$(whoami)"'
         sudo -v # Get the administrator password upfront
         # Keep-alive: update existing `sudo` time stamp until script
         # has finished. (likely overkill, but it's easy)
@@ -81,30 +101,56 @@ function make_sudo() {
 [[ -z "$1" ]] && getout "$1" "Required parameter missing. "
 [[ -f "$1" ]] || getout "$1" "File not found: "
 [[ -r "$1" ]] && file="$1" || getout "$1" "File not readable: "
-[[ -z "$2" ]] && option='xml1' || option="$2"
-[[ in_list "$option" 'xml1 binary1 json' ]] || getout "$option" "Requested option not available: "
+msg "file: $file"
+
+if [[ -z "$2" ]]; then
+    option='xml1'
+else
+    case $2 in
+        xml1 | binary1 | json)
+            option="$2"
+            ;;
+        *)
+            getout "$2" "Requested option not available: "
+            ;;
+    esac
+fi
+msg "option: $option"
 [[ "$3" == 'mine' ]] && mine='mine' || mine=''
+msg "mine: $mine"
 
 ########################
 # check file format
-[[ "$sudo_env" ]] && sudo plutil -lint "$file" || plutil -lint "$file"
-[[ "$?" ]] && printf "File linting successful. Original format is valid: ${file}\n" || getout "$file" "File format incompatible: "
+[[ $(plutil -lint "$file") == "$file: OK" ]]\
+    && printf "File linting successful. Original format is valid: ${file}\n"\
+    || getout "$file" "File format incompatible: "
 
 ########################
 # All tests checkout ... perform conversion
 new_file="${file}.${option}"
+msg "new_file: $new_file"
 # backup original
-[[ "$sudo_env" ]] && sudo cp -af "$file" "${file}.bak" || cp -af "$file" "${file}.bak"
+[[ "$sudo_env" ]]\
+    && sudo cp -af "$file" "${file}.bak"\
+    || cp -af "$file" "${file}.bak"
 # create working copy
-[[ "$sudo_env" ]] && sudo cp -af "$file" "$new_file" || cp -af "$file" "$new_file"
+[[ "$sudo_env" ]]\
+    && sudo cp -af "$file" "$new_file"\
+    || cp -af "$file" "$new_file"
 # if $mine option ... make it mine
 [[ $mine ]] && sudo chown "$current_user" "$new_file"
 # convert
-[[ "$sudo_env" ]] && sudo plutil -convert "$option" "$new_file" || plutil -convert "$option" "$new_file"
-[[ "$?" ]] && printf "Conversion successful\n" || getout "$file" "Error converting to ${option} format : "
-[[ "$?" ]] && printf "New file created.\n" || getout "$file" "Error renaming file. New file uses original name: "
-printf '\n'
-printf "${MAIN}${file} was converted to ${option} format. New filename: ${new_file}\n\n"
+[[ "$sudo_env" ]]\
+    && sudo plutil -convert "$option" "$new_file"\
+    || plutil -convert "$option" "$new_file"
+[[ "$?" ]]\
+    && printf "Conversion successful.\n"\
+    || getout "$file" "Error converting to ${option} format : "
+[[ "$?" ]] &&\
+    printf "New file created.\n"\
+    || getout "$file" "Error renaming file. New file uses original name: "
+
+printf "\n${MAIN}${file} was converted to ${option} format. New filename: ${new_file}\n\n"
 
 exit 0
 
