@@ -1,8 +1,1 @@
-{
-  "SecTaskAccess": ["allowed", "debug"],
-  "CFBundleIdentifier": "com.apple.lldb-vscode",
-  "CFBundleName": "lldb-vscode",
-  "CFBundleInfoDictionaryVersion": "6.0",
-  "CFBundleDevelopmentRegion": "English",
-  "CFBundleVersion": "360.99.0"
-}
+{"SecTaskAccess":["allowed","debug"],"CFBundleIdentifier":"com.apple.lldb-vscode","CFBundleName":"lldb-vscode","CFBundleInfoDictionaryVersion":"6.0","CFBundleDevelopmentRegion":"English","CFBundleVersion":"360.99.0"}
