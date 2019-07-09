@@ -8,6 +8,8 @@
 
 Last update: 06-24-2019 | 23:52:52
 
+![plist screenshot](examples/plixie.png)
+
 ---
 
 ### Convert macOS plist file SOURCE to the optional FORMAT requested.
