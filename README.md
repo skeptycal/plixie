@@ -105,3 +105,5 @@ Last update: 06-24-2019 | 23:52:52
 
 2 directories, 22 files
 ```
+
+[1]: (https://api.netlify.com/api/v1/badges/416b8ca3-82db-470f-9adf-a6d06264ca75/deploy-status)
