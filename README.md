@@ -56,14 +56,6 @@ Last update: 06-24-2019 | 23:52:52
 .
 ├── AUTHORS
 ├── README.md
-├── bak
-│   ├── LICENSE.bak
-│   ├── pipfile
-│   ├── plist.py
-│   ├── plist_xml.sh.old
-│   ├── readme.template.md
-│   ├── script_example.md
-│   └── setup.py
 ├── bitbucket-pipelines.yml
 ├── code-of-conduct.md
 ├── codecov.yml
