@@ -47,31 +47,7 @@ Last update: 06-24-2019 | 23:52:52
 
 #     note: As tested, it is not possible to use a json file as *input*.
 
-
-#
-#   .pre-commit-template.yaml must be in current directory
-#       If not, a generic template will be created
-#   .pre-commit-bak.yaml will be created (if possible)
-#       from .pre-commit-config.yaml as backup
-#   .pre-commit-config.yaml will be *overwritten*
-#       and updated to current master sha from GitHub
 ###############################################################################
-
-
-# Run this script if changes to the pre-commit or yaml configuration are added.
-
-# Please make changes directly to the 'template' file:
-#     <.pre\-commit-template.yaml>
-# and run the script 'pc' to update the yaml to current versioning.
-
-# Please do not make changes directly to the 'config' file. The 'config' file:
-#     <.pre-commit-config.yaml>
-#   is created and updated by the 'pc' script automatically in order to maintain
-#   the correct, current versioning from git (master sha) so changes to the
-#   commit file will be overwritten when updating.
-###############################################################################
-
-
 ```
 
 ---
