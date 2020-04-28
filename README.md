@@ -1,6 +1,6 @@
-![plist screenshot](examples/plixie.png)
+# _plixie version 1.0.0_
 
-# plixie version 1.0.0
+![plist screenshot](examples/plixie.png)
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/416b8ca3-82db-470f-9adf-a6d06264ca75/deploy-status)](https://app.netlify.com/sites/mystifying-keller-ab5658/deploys)
 
