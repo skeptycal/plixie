@@ -1,3 +1,5 @@
+![plist screenshot](examples/plixie.png)
+
 # plixie version 1.0.0
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/416b8ca3-82db-470f-9adf-a6d06264ca75/deploy-status)](https://app.netlify.com/sites/mystifying-keller-ab5658/deploys)
@@ -9,8 +11,6 @@
 ![Twitter Follow](https://img.shields.io/twitter/follow/skeptycal.svg?label=%40skeptycal&style=social) ![GitHub followers](https://img.shields.io/github/followers/skeptycal.svg?style=social)
 
 Last update: 06-24-2019 | 23:52:52
-
-![plist screenshot](examples/plixie.png)
 
 ---
 
